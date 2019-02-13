@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>发表评论</title>
+</head>
+<body>
+		{{block 'head'}}
+		<link rel="stylesheet" href="../public/css/post.css">
+	{{/block}}
+{{block 'content'}}
+		
+
+
+	<script type="text/javascript">
+		 $(function(){
+                        $("#push_form").on('submit',function(e){
+                           e.preventDefault()
+                            var formDate = $(this).serialize()
+                            
+                            $.ajax({
+                                url:'post',
+                                type:'post',
+                                data:formDate,
+                                dataType:'json',
+                                success:function(data){
+                                   var status_code = data.status_code
+
+                                    if(status_code ==1){
+                                        window.alert('发表成功')
+                                        window.location.href='/index'
+                                    }
+                                    if(status_code == 2){
+                                        window.alert('服务器错误')
+                                    }
+                                    if(status_code == 3){
+                                        window.alert('发表失败')
+                                    }
+
+                                }
+                            })
+                        })
+                })
+	</script>
+</body>
+</html>

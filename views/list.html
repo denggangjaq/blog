@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的第i篇</title>
+	<link rel="stylesheet" href="../public/css/base.css">
+	<link rel="stylesheet" href="../public/css/list.css">
+	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style type="text/css" media="screen">
+		.listBox{
+			padding-top: 20px
+		}
+		.listBox .lead{
+			text-indent: 2em
+		}
+	</style>
+</head>
+<body>
+		<div class="listBox">
+			<div class="container">
+			<a href="/index" class="btn btn-info cencel">返回</a>
+				<h1 class="text-center">{{post.title}}</h1>
+			<div class="row">
+				<div class="col-md-3">作者：{{post.author}}</div>
+				<div class="col-md-3">{{post.add_time}}</div>
+				<div class="col-md-3">分类：{{post.classfy}}</div>
+				<div class="col-md-3">标签:{{post.label}}</div>
+			</div>
+			<p class="lead">{{post.content}}</p>
+		</div>
+		</div>
+</body>
+</html>

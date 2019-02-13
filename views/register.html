@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>注册</title>
+<link href="/public/css/register.css" rel="stylesheet" type="text/css" />
+<script src="/node_modules/bootstrap/dist/css/bootstrap.css"></script>
+</head>
+<body>
+<!-- 代码begin -->
+<div class="wrap">
+	<div class="banner-show" id="js_ban_content">
+		<div class="cell bns-01">
+			<div class="con">
+			</div>
+		</div>
+		<div class="cell bns-02">
+			<div class="con">
+				<a href="http://ajaqdg.cn" target="_blank" class="banner-link">
+				<i>主页</i></a> </div>
+		</div>
+		<div class="cell bns-03">
+			<div class="con">
+				<a href="http://ajaqdg.cn" target="_blank" class="banner-link">
+				<i>主页</i></a> </div>
+		</div>
+	</div>
+	<div class="banner-control" id="js_ban_button_box">
+		<a href="javascript:;" class="left">左</a>
+		<a href="javascript:;" class="right">右</a> </div>
+	
+	<div class="container">
+		<div class="register-box">
+			<div class="reg-slogan">
+				新用户注册</div>
+	<div class="reg-form">
+				<br>
+				<br>
+		<form action="/register" id="js-forDate" method="post">
+				<div class="cell">
+					<label>邮&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+					<input type="email" name="email"  class="text" />
+				</div>
+				<div class="cell">
+					<label for="js-mobile_ipt">昵&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+					<input type="text" name="nick_name"  class="text" />
+				</div>
+				<div class="cell">
+					<label for="js-mobile_pwd_ipt">设置密码</label>
+					<input type="password" name="password"  class="text" />
+				 </div>
+
+				<!-- !短信验证码 -->
+				<!-- <div class="cell vcode">
+					<label for="js-mobile_vcode_ipt">输入验证码</label>
+					<input type="text" name="code" id="js-mobile_vcode_ipt" class="text" maxlength="6" />
+					<a href="javascript:;" id="js-get_mobile_vcode" class="button btn-disabled">
+					免费获取验证码</a> </div> -->
+				<div class="bottom">
+					<button type="submit" class="button btn-green">立即注册</button>
+
+			</div>
+		</form>
+			<p class="text-right" style="width: 200px;float: right">已有账号,立即 <a href="/login" class="button btn-blue">登陆</a></p>
+		</div>
+	</div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript">
+				 $(function(){
+                		$("#js-forDate").on('submit',function(e){
+                			e.preventDefault()
+                			var formDate = $(this).serialize()
+                			
+                			$.ajax({
+                				url:'register',
+                				type:'post',
+                				data:formDate,
+                				dataType:'json',
+                				success:function(data){
+                                    console.log(data)
+                                    var status_code = data.status_code
+                                    if(status_code === 1){
+                                        window.alert('注册成功')
+                                        window.location.href='/index'
+                                    }
+                                    if(status_code == 2){
+                                        window.alert('服务器错误')
+                                    }
+                                    if(status_code == 3){
+                                        window.alert('邮箱或者昵称已存在')
+                                    }
+                				}
+                			})
+                		})
+
+                })
+
+                ;(function(){
+                    
+                    var defaultInd = 0;
+                    var list = $('#js_ban_content').children();
+                    var count = 0;
+                    var change = function(newInd, callback){
+                        if(count) return;
+                        count = 2;
+                        $(list[defaultInd]).fadeOut(400, function(){
+                            count--;
+                            if(count <= 0){
+                                if(start.timer) window.clearTimeout(start.timer);
+                                callback && callback();
+                            }
+                        });
+                        $(list[newInd]).fadeIn(400, function(){
+                            defaultInd = newInd;
+                            count--;
+                            if(count <= 0){
+                                if(start.timer) window.clearTimeout(start.timer);
+                                callback && callback();
+                            }
+                        });
+                    }
+                    
+                    var next = function(callback){
+                        var newInd = defaultInd + 1;
+                        if(newInd >= list.length){
+                            newInd = 0;
+                        }
+                        change(newInd, callback);
+                    }
+                    
+                    var start = function(){
+                        if(start.timer) window.clearTimeout(start.timer);
+                        start.timer = window.setTimeout(function(){
+                            next(function(){
+                                start();
+                            });
+                        }, 8000);
+                    }
+                    
+                    start();
+                    
+                    $('#js_ban_button_box').on('click', 'a', function(){
+                        var btn = $(this);
+                        if(btn.hasClass('right')){
+                            //next
+                            next(function(){
+                                start();
+                            });
+                        }
+                        else{
+                            //prev
+                            var newInd = defaultInd - 1;
+                            if(newInd < 0){
+                                newInd = list.length - 1;
+                            }
+                            change(newInd, function(){
+                                start();
+                            });
+                        }
+                        return false;
+                    });
+                    
+                })();
+
+
+</script>
+<!-- 代码 end -->
+</body>
+</html>

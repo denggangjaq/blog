@@ -1,0 +1,85 @@
+﻿<html>
+<!DOCTYPE html>
+<html lang="zh" class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>登录(Login)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="/public/css/login/reset.css">
+        <link rel="stylesheet" href="/public/css/login/style.css">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="assets/js/html5.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body>
+
+        <div class="bg bg1">
+            <div class="page-container">
+                <h1>登录</h1>
+                    <form action="/login" method="post" id='login_form'>
+                        <input type="text" name="email" class="email" placeholder="请输入您的邮箱！">
+                        <input type="password" name="password" class="password" placeholder="请输入您的用户密码！">
+                        <!-- <input type="Captcha" class="Captcha" name="Captcha" placeholder="请输入验证码！"> -->
+                        <button type="submit" class="submit_button">登录</button>
+                        <div class="error"><span>+</span></div>
+                    </form>          
+                <p style="margin-top: 20px">没有账号,去<a href="/register">注册</a></p>
+            </div>  
+        </div>
+
+        <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+        
+        <script type="text/javascript">
+             $(function(){
+                        var i = 1
+                        setInterval(function(){
+                            switch(i){
+                                case 1:$('.bg').removeClass('bg1').addClass('bg2');break;
+                                case 2:$('.bg').removeClass('bg2').addClass('bg3');break;
+                                case 3:$('.bg').removeClass('bg3').addClass('bg1');break;
+                            }
+                            i++;
+                            if(i>3){
+                                i =1
+                            }
+                        },4000)
+
+                        $("#login_form").on('submit',function(e){
+                           e.preventDefault()
+                            var formDate = $(this).serialize()
+                            
+                            $.ajax({
+                                url:'login',
+                                type:'post',
+                                data:formDate,
+                                dataType:'json',
+                                success:function(data){
+                                   var status_code = data.status_code
+                                    if(status_code ==1){
+                                        window.alert('登陆成功')
+                                        window.location.href='/index'
+                                    }
+                                    if(status_code == 2){
+                                        window.alert('邮箱或者密码错误')
+                                    }
+                                    if(status_code == 3){
+                                        window.alert('服务器错误')
+                                    }
+
+                                }
+                            })
+                        })
+                })
+        </script>
+    </body>
+
+</html>
+

@@ -1,0 +1,134 @@
+{{extend './base.html'}}
+{{block 'title'}}{{title}}{{/block}}
+	{{block 'head'}}
+		<link rel="stylesheet" href="../public/css/index.css">
+		<link rel="stylesheet" href="../public/css/base.css">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	{{/block}}
+
+{{block 'content'}}
+	<article>
+		<div class="container">
+			{{if user}}
+				<a href="javascript:;" class="btn btn-info write-article">写文章</a>
+			{{else}}
+				<div></div>
+			{{/if}}
+			<ul class="w-article">
+				{{each post}}
+				<li class="c-boxli">
+					<h3 class="c-title">{{$value.title}}</h3>
+					<div class="c-small">
+						<ul class="c-detailed-list">
+							<li class="c-author">作者:<span class="c-author-r">{{$value.author}}</span></li>
+							<li class="c-time">{{$value.add_time}}</li>
+							<li class="c-classify">分类:<span class="c-author-r">{{$value.classfy}}</span></li>
+							<li class="c-label">标签:{{$value.label}}</li>
+						</ul>
+					</div>
+					<div class="c-content clear">
+						<a href="/list?id={{ $value.id }}">
+							<p id="content">
+								{{$value.content}}
+							</p>
+						</a>
+					</div>
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+	</article>
+
+	<!-- 发表评论 弹窗-->
+
+	<div class="maxbox hidden">
+	</div>
+	<div class="contentBox hidden">
+		<div class="cencelBox clear">
+			<a href="javascript:;" class="cancel c-center">X</a>
+		</div>
+		<div class="container">
+			<form action="/post" method="post" id="push_form">
+			{{if user}}
+			<input type="hidden" name="author" value="{{ user.nick_name }}">
+			{{else}}
+			<input type="hidden" name="author" value="">
+			{{/if}}
+			<input type="hidden" name="add_time" value="">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">标题</label>
+			    <input type="text" class="form-control"  placeholder="title" name="title">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">分类</label>
+			    <select class="form-control" name="classfy">
+					  <option value="C++">C++</option>
+					  <option value="前端">前端</option>
+					  <option value="java">java</option>
+					  <option value=".net">.net</option>
+					  <option value="linux">linux</option>
+				</select>
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputFile">标签</label>
+			     <select class="form-control" name='label'>
+					  <option value="年轻">年轻</option>
+					  <option value="掉头发">掉头发</option>
+					  <option value="程序员">程序员</option>
+					  <option value="年轻的程序元">年轻的程序元</option>
+					  <option value="屌事">屌事</option>
+				</select>
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">内容</label>
+			    <textarea class="form-control" name="content"></textarea> 
+			  </div>
+			  <button type="submit" class="btn btn-info">提交</button>
+			</form>
+		</div>
+	</div>
+{{/block}}
+{{block "js"}}
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript">
+		 $(function(){
+            $("#push_form").on('submit',function(e){
+               e.preventDefault()
+                var formDate = $(this).serialize()
+                
+                $.ajax({
+                    url:'post',
+                    type:'post',
+                    data:formDate,
+                    dataType:'json',
+                    success:function(data){
+                       var status_code = data.status_code
+
+                        if(status_code ==1){
+                            window.alert('发表成功')
+                            window.location.href='/index'
+                        }
+                        if(status_code == 2){
+                            window.alert('服务器错误')
+                        }
+                        if(status_code == 3){
+                            window.alert('发表失败')
+                        }
+
+                    }
+                })
+            })
+
+
+            //控制弹出框
+            $(".write-article").click(function(){
+            	$(".maxbox").removeClass('hidden').addClass('showBox');
+            	$(".contentBox").removeClass('hidden').addClass('showBox');
+            })
+            $(".cancel").click(function(){
+            	$(".maxbox").removeClass('showBox').addClass('hidden');
+            	$(".contentBox").removeClass('showBox').addClass('hidden');
+            })
+        })
+		</script>
+{{/block}}

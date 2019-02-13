@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>{{block 'title'}}首页{{/block}}</title>
+		<link rel="stylesheet" href="../public/css/base.css">
+		<link rel="stylesheet" href="../public/css/header.css">
+		<link href="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+	{{block 'head'}} 
+	{{/block}}
+</head>
+<body>
+	<div class="header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 logo"><a href="/"></a><img src="../public/images/logo.png" alt="logo"></div>
+			<div class="col-md-4 serch">
+				<form action="">
+					<div class="fromBox">
+						<input type="text" name="" value="">
+						<input type="submit" name="" value="搜索" class="serch_btn">
+					</div>
+				</form>
+			</div>
+			<div class="col-md-4 good-ni">
+					{{if user}}
+					<p class="good-you">欢迎你<span style="color:#17A9E0">{{ user.nick_name }}</span><a href="/goOut" class="gout">退出</a></p>
+
+					{{else}}
+					<p class="good-you">
+						<a href="/login" class="btn btn-success">登陆</a> |
+						<a href="/register" class="btn btn-success">注册</a>
+						
+					</p>
+					{{/if}}	
+					
+			</div>
+		</div>
+	</div>
+</div>
+
+	{{block 'content'}} {{/block}}
+	
+
+	
+	{{block 'js'}} {{/block}}
+</body>
+</html>
+      
